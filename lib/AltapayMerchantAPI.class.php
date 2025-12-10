@@ -5,17 +5,17 @@ class AltapayMerchantAPI
     const VERSION = 'PHPSDK/2.1.0';
 
     /** @var string */
-    private $baseURL;
+    protected $baseURL;
     /** @var string */
-    private $username;
+    protected $username;
     /** @var string */
-    private $password;
+    protected $password;
     /** @var bool */
-    private $connected = false;
+    protected $connected = false;
     /** @var IAltapayCommunicationLogger|null */
-    private $logger;
+    protected $logger;
     /** @var IAltapayHttpUtils */
-    private $httpUtil;
+    protected $httpUtil;
 
     /**
      * @param string $baseURL
@@ -49,7 +49,7 @@ class AltapayMerchantAPI
      *
      * @return void
      */
-    private function checkConnection()
+    protected function checkConnection()
     {
         if (!$this->connected) {
             throw new Exception('Not Connected, invoke login() before using any API calls');
@@ -73,7 +73,7 @@ class AltapayMerchantAPI
      *
      * @return string
      */
-    private function maskPan($pan)
+    protected function maskPan($pan)
     {
         if (strlen($pan) >= 10) {
             return substr($pan, 0, 6).str_repeat('x', strlen($pan) - 10).substr($pan, -4);
@@ -95,7 +95,7 @@ class AltapayMerchantAPI
      *
      * @return AltapayHttpResponse
      */
-    private function callAPIMethod($method, array $args = array())
+    protected function callAPIMethod($method, array $args = array())
     {
         $absoluteUrl = $this->baseURL.'/merchant/API/'.$method;
 
@@ -160,7 +160,7 @@ class AltapayMerchantAPI
      *
      * @return SimpleXMLElement
      */
-    private function callAPIMethodXML($method, array $args = array())
+    protected function callAPIMethodXML($method, array $args = array())
     {
         $response = $this->callAPIMethod($method, $args);
 
@@ -192,7 +192,7 @@ class AltapayMerchantAPI
      *
      * @return string
      */
-    private function callAPIMethodCSV($method, array $args = array())
+    protected function callAPIMethodCSV($method, array $args = array())
     {
         $response = $this->callAPIMethod($method, $args);
 
@@ -286,7 +286,7 @@ class AltapayMerchantAPI
      *
      * @return AltapayOmniReservationResponse
      */
-    private function reservationInternal(
+    protected function reservationInternal(
         $apiMethod,
         $terminal,
         $shopOrderId,
@@ -1322,7 +1322,7 @@ class AltapayMerchantAPI
      *
      * @return void
      */
-    private function addCustomerInfo($customerInfo, &$args)
+    protected function addCustomerInfo($customerInfo, &$args)
     {
         $errors = array();
         $sessionId = session_id();
