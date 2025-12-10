@@ -620,6 +620,7 @@ class AltapayMerchantAPI
      * @param string                           $invoiceNumber
      * @param string|null                      $shippingCompany
      * @param string|null                      $trackingNumber
+     * @param string|null                      $trackingUrl
      *
      * @throws AltapayConnectionFailedException
      * @throws AltapayInvalidResponseException
@@ -629,7 +630,7 @@ class AltapayMerchantAPI
      *
      * @return AltapayCaptureResponse
      */
-    public function captureReservation($paymentId, $amount = null, array $orderLines = array(), $salesTax = null, $reconciliationIdentifier = null, $invoiceNumber = null, $shippingCompany = null, $trackingNumber = null)
+    public function captureReservation($paymentId, $amount = null, array $orderLines = array(), $salesTax = null, $reconciliationIdentifier = null, $invoiceNumber = null, $shippingCompany = null, $trackingNumber = null, $trackingUrl = null)
     {
         $this->checkConnection();
 
@@ -643,10 +644,14 @@ class AltapayMerchantAPI
                     'sales_tax'                 => $salesTax,
                     'reconciliation_identifier' => $reconciliationIdentifier,
                     'invoice_number'            => $invoiceNumber,
-                    'shippingTrackingInfo'      => array(
-                        'shippingCompany' => $shippingCompany,
-                        'trackingNumber'  => $trackingNumber,
-                    ),
+                    'trackingInfo'              => [
+                        [
+                            'companyName'     => $shippingCompany,
+                            'trackingNumber'  => $trackingNumber,
+                            'trackingUri'     => $trackingUrl,
+                            'type'            => 'SHIPPING',
+                        ],
+                    ],
                 )
             )
         );
